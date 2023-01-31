@@ -10,3 +10,8 @@ f_render <- function(fname) {
 for (fname in fnames) {
   f_render(fname)
 }
+
+install.packages('tinytex')
+tinytex::install_tinytex()  # install TinyTeX
+
+install.packages("reticulate")
