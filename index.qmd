@@ -6,7 +6,7 @@ about:
   links:
     - text: GitHub
       icon: github
-      href: https://github.com/devondimatteo
+      href: https://github.com/YOUR_GITHUB
     - text: LinkedIn
       icon: linkedin
       href: https://www.linkedin.com/in/YOUR_LINKEDIN/
