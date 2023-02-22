@@ -6,16 +6,16 @@ about:
   links:
     - text: GitHub
       icon: github
-      href: https://github.com/YOUR_GITHUB
+      href: https://github.com/devondimatteo
     - text: LinkedIn
       icon: linkedin
-      href: https://www.linkedin.com/in/YOUR_LINKEDIN/
+      href: https://www.linkedin.com/in/devon-dimatteo-2a5a39192/
     - text: Twitter
       icon: twitter
       href: https://twitter.com/YOUR_SOCIAL_MEDIA
     - text: Email
       icon: envelope
-      href: mailto:YOUR_EMAIL@geneseo.edu
+      href: mailto:dtd2@geneseo.edu
     - text: Résumé
       icon: file-pd
       href: https://YOUR_GITHUB.github.io/YOUR_RESUME.pdf
@@ -24,13 +24,13 @@ about:
 
 I am a student at State University of New York at Geneseo.
 
-I am interested in ...
+I am interested in Data Analytics, Sustainability, and Economics
 
-I enjoy ...
+I enjoy Music and Nature!
 
 
 ## Education
 
 **State University of New York at Geneseo**, 2023<br>
-- B.A./B.S. in YOUR MAJOR<br>
-- YOUR MINOR
+- B.A./B.S. in Economics<br>
+- Data Analytics
