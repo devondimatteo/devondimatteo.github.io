@@ -10,15 +10,115 @@ knitr::opts_chunk$set(warning = F, message = F,
                       fig.height = 14, fig.width = 7)
 ```
 
-# ggplot
-
-## Why ggplot is awesome
-
-The following boxplot shows how the distribution of city MPG (`cty`) varies by a type of cars (`class`).
+#Question 2A
 
 ```{r mpg-box, eval=T, echo=T}
-ggplot(mpg) +
-  geom_boxplot(aes(x = class, y = cty, fill = class))
+ncdc_temp <- read_csv(
+  'https://bcdanl.github.io/data/ncdc_temp_cleaned.csv')
+ncdc_temp
+ncdc_temp1 <- ncdc_temp %>% 
+  group_by(location, month) %>% 
+  mutate(temp_mean = mean(temperature))
+view(ncdc_temp1)
+p1 <- ggplot(data = ncdc_temp1, aes(y = temp_mean, x = month, color = location))
+p1 + geom_point()+
+  geom_line()
+
+
+```
+#Question 2B
+
+```{r}
+ncdc_temp2 <- ncdc_temp %>% 
+  group_by(month) %>% 
+  mutate(temp_mean = mean(temperature))
+view(ncdc_temp1)
+p2 <- ggplot(data = ncdc_temp2, aes(y = temperature, x = month))
+p2 + geom_boxplot()+
+  labs(y="mean temperature (F°)")+
+  theme(panel.border = element_rect(color = "black", fill=NA, size = 2))
+
+
+
+```
+#Question 2C
+
+```{r}
+ggridges::geom_density_ridges()
+ncdc_temp3 <- ncdc_temp %>% 
+  group_by(month) %>% 
+  mutate(temp_mean = mean(temperature))
+p3 <- ggplot(data = ncdc_temp3, aes(y = month, x = temperature))
+p3 + ggridges::geom_density_ridges(fill = "blue")+
+  labs(y="mean temperature (F°)")
+
+
+```
+#Question 2D
+
+```{r}
+mtcars
+p4 <- ggplot(mtcars, aes(x = disp, y = mpg, color = hp))
+p4 + geom_point()+
+  labs(x = "displacement(cu. in.", y = "fuel efficiency(mpg)")
+```
+#Question 2E
+
+```{r}
+popgrowth_df <- read_csv(
+  'https://bcdanl.github.io/data/popgrowth.csv')
+view(popgrowth_df)
+p5 <- ggplot(popgrowth_df, 
+             aes( x = reorder(state,popgrowth), 
+                  y = popgrowth, 
+                  fill = region))
+p5 + geom_col() + 
+  coord_flip()+
 ```
 
+#Question 2F
+
+```{r}
+male_Aus <- read_csv(
+  'https://bcdanl.github.io/data/aus_athletics_male.csv')
+male_Aus
+p6 <- ggplot(data = male_Aus, aes(y = pcBfat, x = height))
+p6 + geom_point()
+
+```
+#Question 2G
+
+```{r}
+titanic <- read_csv(
+  'https://bcdanl.github.io/data/titanic_cleaned.csv')
+titanic
+titanic1 <- titanic %>% 
+  group_by(sex) %>% 
+  summarize(N = n()) %>% 
+  mutate(count = N)
+p7 <- ggplot(titanic, aes(x=age)) + 
+  geom_density()+
+  facet_wrap(facets = "sex")+
+  geom_density()
+  labs(x = "passenger age (years)", y = "count")
+p7
+
+
+```
+
+
+
+
+
+```{r}
+cows_filtered <- read_csv(
+  'https://bcdanl.github.io/data/cows_filtered.csv')
+cows_filtered
+cows_filtered1 <- cows_filtered %>% 
+  group_by(breed)
+p7 <- ggplot(cows_filtered1, aes(x=butterfat)) + 
+  geom_density()
+p7
+
+```
 
