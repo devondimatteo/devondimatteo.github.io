@@ -1,0 +1,73 @@
+---
+title: "Homework 2"
+format:
+  html:
+    theme: default
+---
+
+```{r setup, include = F}
+library(tidyverse)
+knitr::opts_chunk$set(warning = F, message = F,
+                      fig.height = 14, fig.width = 7)
+```
+
+```{r}
+#2A
+hdi_corruption <- read_csv(
+  'https://bcdanl.github.io/data/hdi_corruption.csv')
+df1 <- hdi_corruption %>% 
+  group_by(region)
+p1 <- ggplot(data = df1, aes(y = hdi, x = cpi), color = region)+
+  geom_point()+
+  labs(x = "Corruption Perception Index, 2014 (100 = least corrupt)", 
+       y = "Human Development Index, 2014 (1.0 = most developed")
+p1 + geom_smooth()
+p1
+```
+
+```{r}
+#2B
+
+# library(readr)
+labor_supply <- read_csv("C:/Users/Devon DiMatteo/Downloads/labor_supply (1).zip")
+df <- labor_supply %>% 
+  group_by(YEAR) %>% 
+  mutate(pop = sum(ASECWT)) %>% 
+  mutate(child = ifelse(NCHLT5 < 5, "Having a Child Under Age 5 in Household"
+                        , "No Child Under Age 5 in Highschool"))
+  
+p2 <- ggplot(data = df, aes(y = pop, x = YEAR))+
+  geom_line()+
+  facet_wrap(child ~ .)+
+  labs(y = "Labor Force Participation Rate")
+p2
+
+```
+
+```{r}
+#2C
+#install.packages("ggcorrplot")
+library(ggcorrplot) # to create correlation heatmaps using ggcorrplot()
+
+beer_mkt <- read_csv('https://bcdanl.github.io/data/beer_markets.csv')
+
+beer_dummies <- beer_mkt %>% select(-hh, -market) 
+reg <- lm(data = beer_dummies,
+          beer_floz ~ .)
+beer_dummies <-  as.data.frame(model.matrix(reg))[, -1]
+beer_dummies <- cbind(beer_mkt$beer_floz ,beer_dummies)
+beer_dummies <- beer_dummies %>% 
+  rename(beer_floz = `beer_mkt$beer_floz`)
+
+correlation <- as.data.frame(cor(beer_dummies))
+
+#NY markets are
+#ALBANY, BUFFALO-ROCHESTER, RURAL NEW YORK, URBAN NY, 
+#SUBURBAN NY, EXURBAN NY, SYRACUSE
+```
+
+```{r}
+p3 <- ggcorrplot(correlation)
+p3
+```
+

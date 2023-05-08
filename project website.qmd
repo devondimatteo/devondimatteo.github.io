@@ -1,0 +1,196 @@
+---
+title: "NCAA Basketball Regression"
+subtitle: "DANL310 Project" 
+author: 
+  - "Alec Eng"
+  - "Devon DiMatteo"
+  - <br>
+date: "2023-05-04<br><br>"
+format: 
+  html:
+    code-fold: True
+    
+---
+<br><br>
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+
+
+```
+
+
+```{r}
+oj <- read_csv('https://bcdanl.github.io/data/dominick_oj.csv')
+nvars <- format(round(ncol(oj), 0),
+                nsmall=0,
+                big.mark=",")
+nobs <- format(round(nrow(oj), 0),
+                nsmall=0,
+                big.mark=",")
+
+```
+
+The number of variables is `r nvars`, and the number of observations is `r nobs`
+
+<br> 
+
+The 
+
+# Introduction
+- Why does your research project matter
+- Motive for project
+- Summarize the project in the last paragraph
+
+# Data
+- Summary statistics (Use `skimr::skim()`)
+
+# Conceptual Framework
+- Justify your ML model.
+ - Why the model considers the variables in the model.
+
+# Model 
+- Add some model equation
+
+Empirical Model:
+
+$$y_{i} = \beta_{0} + \beta_{1}ADJOE_{1i} + \beta_{2}ADJDE_{1i} + \beta_{3}EFG_O_{1i} + \beta_{4}EFG_D_{1i} + \beta_{5}TOR_{1i} + \beta_{6}TORD_{1i} + \beta_{7}2P_O_{1i} + \beta_{8}2P_D_{1i} + \beta_{9}3P_O_{1i} + \beta_{10}SEED_{1i} + \beta_{11}WAB_{1i} +  \epsilon_{i}$$
+
+
+
+
+# Results
+- summarize the main results of the model you want to focus on 
+ - pridected outcomes
+ 
+
+- Which model performed the best
+ - Mean squared errors
+ residual plots
+
+# Discussion
+- Discuss the implication of your model result
+- You can make suggestions for strategy 
+
+# Conclusion
+- Summarize the project
+- Mention future work 
+
+
+
+#Project
+
+```{r}
+library(readxl)
+df <- read_excel("C:\\Users\\Devon DiMatteo\\Desktop\\danl310df.xlsx")
+
+```
+
+
+
+# Model 
+
+```{python}
+import pandas as pd
+import numpy as np
+```
+
+```{python}
+data=pd.read_excel("C:\\Users\\Devon DiMatteo\\Desktop\\danl310df.xlsx")
+cbb_data=data.copy()
+cbb = cbb_data[[ "W", "ADJOE", "ADJDE", "EFG_O", "EFG_D", "TOR", "TORD", "2P_O","2P_D", "3P_O","3P_D", "SEED", "WAB" ]]
+```
+
+```{python}
+cbb_data.info()
+```
+
+```{python}
+cbb.info()
+```
+```{python}
+cbb_features=cbb.drop("SEED", axis="columns")
+cbb_labels=cbb["SEED"]
+```
+
+#Linear Regression Model
+
+```{python}
+from sklearn.linear_model import LinearRegression
+lin_reg=LinearRegression()
+lin_reg.fit(cbb_features, cbb_labels)
+```
+```{python}
+lin_reg.coef_
+```
+
+
+```{python}
+from sklearn.metrics import mean_squared_error
+cbb_predictions=lin_reg.predict(cbb_features)
+lin_mse=mean_squared_error(cbb_labels,cbb_predictions)
+
+import numpy as np
+lin_rmse=np.sqrt(lin_mse)
+
+print(lin_rmse)
+```
+
+#Decision Tree Model
+
+```{python}
+from sklearn.tree import DecisionTreeRegressor
+tree_reg=DecisionTreeRegressor()
+tree_reg.fit(cbb_features, cbb_labels)
+```
+
+```{python}
+from sklearn.metrics import mean_squared_error
+cbb_predictions2=tree_reg.predict(cbb_features)
+tree_mse=mean_squared_error(cbb_labels, cbb_predictions2)
+
+import numpy as np
+tree_rmse=np.sqrt(tree_mse)
+
+print(tree_rmse)
+```
+```{python}
+
+```
+
+
+#Random Forest
+
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+forest_reg=RandomForestRegressor()
+forest_reg.fit(cbb_features,cbb_labels)
+```
+```{python}
+from sklearn.metrics import mean_squared_error
+cbb_predictions3=forest_reg.predict(cbb_features)
+forest_mse=mean_squared_error(cbb_labels, cbb_predictions3)
+forest_rmse=np.sqrt(forest_mse)
+```
+
+```{python}
+print(forest_rmse)
+```
+```{python}
+
+```
+
+
+
+```{python}
+importances = forest_reg.feature_importances_
+```
+
+
+
+
+
+
+
+

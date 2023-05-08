@@ -1,0 +1,13 @@
+name: MyShinyApp
+title: MyShinyApp
+username:
+account: devondimatteo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8950456
+bundleId: 7134760
+url: https://devondimatteo.shinyapps.io/MyShinyApp/
+when: 1682449396.01403
+lastSyncTime: 1682449396.01409
+asMultiple: FALSE
+asStatic: FALSE

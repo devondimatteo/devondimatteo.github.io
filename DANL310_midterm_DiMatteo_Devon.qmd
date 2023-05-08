@@ -1,0 +1,241 @@
+---
+title: "DANL 310: Data Visualization and Presentation\nMidterm Exam"
+date: "2023-04-06"
+---
+
+
+# Honor Pledges 
+
+I solemnly swear that I will not cheat or engage in any form of academic dishonesty during this exam. 
+
+<br>
+
+I will not communicate with other students or use unauthorized materials. 
+
+<br>
+
+I will uphold the integrity of this exam and demonstrate my own knowledge and abilities.
+
+<br>
+
+By taking this pledge, I acknowledge that academic dishonesty undermines the academic process and is a violation of the trust placed in me as a student. 
+
+<br>
+
+I accept the consequences of any violation of this promise.
+
+<br>
+
+Student's Signature: Devon DiMatteo
+
+
+
+## Exam Questions
+
+The midterm exam questions are provided in the following webpage:
+- [https://bcdanl.github.io/DANL310-midterm-q.html](https://bcdanl.github.io/DANL310-midterm-q.html).
+
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(knitr)
+#library(kableExtra)
+library(ggthemes)
+#library(ggtech)
+#library(ggthemr)
+library(ggthemes)
+library(hrbrthemes)
+#library(hexbin)
+#library(ggforce)
+library(skimr)
+
+knitr::opts_chunk$set(fig.width=8, fig.height=5,
+                      echo = T, eval = T, warning = F, message = F) 
+```
+
+## Loading R packages
+
+```{r, warning=F, message=F}
+library(knitr)
+library(tidyverse)
+library(lubridate)
+library(socviz)
+library(ggthemes)
+library(hrbrthemes)
+library(gapminder)
+```
+
+- `hrbrthemes::theme_ipsum()` or `theme_minimal()` can be used for your ggplot theme.
+
+
+<br>
+
+# Question 1
+
+The following data is for Question 1:
+
+```{r}
+gapminder <- gapminder
+```
+
+```{r, result = 'asis', echo = F}
+rmarkdown::paged_table(gapminder) 
+```
+
+<br>
+
+Q1a. Replicate the given ggplot.
+
+  - Use the color `#0072B2` for dots.
+  
+
+```{r}
+df <- gapminder %>% 
+  filter(!is.na(lifeExp)) %>% 
+  filter(continent != "Oceania")
+
+q1 <- ggplot(data = filter(df, year == 2007), 
+             aes(x = lifeExp, y = reorder(country, lifeExp)))  
+q1 + geom_point(color = "#0072B2")+
+  facet_wrap(~continent)+
+  labs(title = "Life Expectancy in 2007")
+
+```
+
+Q1b. Make a simple comment on the visualization result.
+Life expectancy looks to be greater in Europe, and Africa has many countries 
+with low life expectancy
+
+
+# Question 2
+
+The following data is for Question 2:
+
+```{r}
+n_tweets_long <- read_csv(
+  'https://bcdanl.github.io/data/n_tweets_long.csv')
+```
+
+```{r, result = 'asis', echo = F}
+rmarkdown::paged_table(n_tweets_long) 
+```
+
+<br>
+
+Q2a. Replicate the given ggplot.
+
+  - The following describes the `type` values:
+    - `n_ot_us`: Number of US tweets 
+    - `n_ot_wrld`: Number of worldwide tweets 
+    - `n_rt_lk_us`: Number of US retweets & likes
+    - `n_rt_lk_wrld`: Number of worldwide retweets & likes 
+  - Use the colors, `maroon` and `#428bca` properly.
+  
+```{r}
+df2 <- n_tweets_long %>% 
+  filter(type != "n_ot_wrld") %>% 
+  filter(type != "n_ot_us")
+
+q2 <- ggplot(data = df2,
+            aes(x = year, y = n, fill = type)) 
+q2 + geom_col(position = 'dodge') +
+  labs(x = "Year", y = "Number of Tweets, Retweets & Likes (in thousand)")
+```
+
+Q2b. Make a simple comment on the visualization result.
+Tweets both worldwide and in the US increased over time
+
+<br><br>
+
+# Question 3
+
+The following data set is for Question 3:
+
+```{r}
+nyc_dog_license <- read_csv(
+  'https://bcdanl.github.io/data/nyc_dog_license.csv')
+nyc_zips_coord <- read_csv(
+  'https://bcdanl.github.io/data/nyc_zips_coord.csv')
+nyc_zips_df <- read_csv(
+  'https://bcdanl.github.io/data/nyc_zips_df.csv')
+```
+
+```{r, result = 'asis', echo = F}
+rmarkdown::paged_table(nyc_dog_license) 
+```
+
+```{r, result = 'asis', echo = F}
+rmarkdown::paged_table(nyc_zips_coord) 
+```
+
+```{r, result = 'asis', echo = F}
+rmarkdown::paged_table(nyc_zips_df) 
+```
+
+<br>
+
+Q3a. Replicate the given ggplot.
+
+  - You should calculate the proportion of `Pit Bull (or Mix)` for each zip code.
+  - You should join data.frames properly.
+  - Choose the color palette from the `viridis` scales [https://ggplot2.tidyverse.org/reference/scale_viridis.html](https://ggplot2.tidyverse.org/reference/scale_viridis.html).
+  - Use `coord_map(projection = "albers", lat0 = 39, lat1 = 45)`.
+
+
+
+```{r}
+nyc_dog_license <- nyc_dog_license
+nyc_dog_license$borough <- as.integer(nyc_dog_license$borough)
+#nyc_full1 <- left_join(nyc_dog_license, nyc_zips_coord)
+
+#nyc_full1 <- nyc_full1
+
+
+#nyc <-  nyc_full %>% 
+#  mutate(perc = breed_rc)
+
+#q3 <- ggplot(data = nyc) + 
+#  geom_polygon(mapping = aes(x = long, y = lat,
+#                             , 
+#                             fill = ),
+#               color = "grey60", 
+#               linewidth = 0.1) 
+```
+
+
+Q3b. Which `zip_code` does have the highest proportion of `Pit Bull (or Mix)`?
+
+
+<br><br>
+
+# Question 4 
+
+The following data is for Question 4:
+
+```{r}
+stock <- read_csv('https://bcdanl.github.io/data/stocks2013_2023.csv')
+```
+
+```{r, result = 'asis', echo = F, message = F, warning = F}
+rmarkdown::paged_table(stock) 
+```
+
+<br>
+
+Q4a. Replicate the given ggplot.
+
+```{r}
+df4 <- stock %>% 
+  mutate(year = year(Date)) %>% 
+  filter(year %in% c(2019,2020,2021,2022))
+q4 <- ggplot(data = df4, aes(y = Close, x = Volume)) 
+q4 + geom_point(aes(color = company)) + 
+  geom_smooth(method = "lm")+
+  facet_grid(company ~ year)+
+  scale_y_log10(name = "Close (in log)")+
+  scale_x_log10(name = "Volume (in log)")
+```
+
+
+Q4b. In 2020, which company's stock trading `Volume` does seem to be the most insensitive to a change in `Close` price?
+Netflix seems to be the most insensitive to Close price
