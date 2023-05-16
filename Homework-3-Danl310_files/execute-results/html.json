@@ -1,0 +1,14 @@
+{
+  "hash": "3e2b6040a3af830986c40c4f4988a5e9",
+  "result": {
+    "markdown": "---\ntitle: \"Homework 3\"\nformat:\n  html:\n    theme: default\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(shiny)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: package 'shiny' was built under R version 4.2.3\n```\n:::\n\n```{.r .cell-code}\n#install.packages(\"shinythemes\")\nlibrary(shinythemes)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nWarning: package 'shinythemes' was built under R version 4.2.3\n```\n:::\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n```\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.1     ✔ purrr   1.0.1\n✔ tibble  3.1.8     ✔ dplyr   1.1.0\n✔ tidyr   1.3.0     ✔ stringr 1.5.0\n✔ readr   2.1.4     ✔ forcats 1.0.0\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n```\n:::\n\n```{.r .cell-code}\ndata(\"faithful\")\ndf <- faithful\n\ndf1 <- faithful %>%\n  summarize(count = n()) %>%\n  arrange(desc(count))\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n#ui <- fluidPage(theme = shinytheme(\"yeti\"),\n  \n#  titlePanel(\"Old Faithful Geyser Data\"),\n  \n#  sidebarLayout(\n\n#    sidebarPanel(\n#      selectInput(\"stormStatus\",\n#                  label = \"Filter by storm type: \",\n#                  choices = unique(stormNames$status))\n#    ),\n#    \n#    mainPanel(\n#      p(\"Histogram of Waiting Times\"),\n#      plotOutput(\"nameDist\"),\n#      \n#    )\n#  )\n#)\n\n#server <- function(input, output, session) {\n  \n  \n#  output$nameDist <- renderPlot({\n    \n#    str(input$stormStatus)\n    \n#    names_filtered <- filter(stormNames, status == input$stormStatus)\n#    hist(names_filtered$count)\n\n#  },\n#  width = 400, height = 300)\n  \n#  output$nameTable <- renderTable({\n    \n#    names_filtered <- filter(stormNames, status == input$stormStatus)\n#    head(names_filtered, 20)\n    \n#  })\n  \n#}\n\n#shinyApp(ui, server)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

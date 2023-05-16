@@ -1,0 +1,13 @@
+name: old_faithful
+title: old_faithful
+username:
+account: devondimatteo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9114428
+bundleId: 7221509
+url: https://devondimatteo.shinyapps.io/old_faithful/
+when: 1684181227.60863
+lastSyncTime: 1684181227.60869
+asMultiple: FALSE
+asStatic: FALSE

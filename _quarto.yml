@@ -10,7 +10,7 @@ website:
     pinned: true
     left:
       - text: Project
-        href: project website.qmd
+        href: project-website.qmd
       - text: Homework
         menu:
           - text: hw0

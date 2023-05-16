@@ -1,0 +1,283 @@
+---
+title: "NCAA Basketball Regression"
+subtitle: "DANL310 Project" 
+author: 
+  - "Alec Eng"
+  - "Devon DiMatteo"
+  - <br>
+date: "2023-05-04<br><br>"
+format: 
+  html:
+    code-fold: True
+    
+---
+<br><br>
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(skimr)
+```
+
+
+<br> 
+
+# Introduction
+With Springtime in full swing, everyone is back outside, taking in some rays and getting active out in the sun. Along with the weather springing into excitement, comes many yearly sporting events to come back into action. Many avid sports fans know Spring is here with the start up of the Major League Baseball season, The Masters Championship being played at Augusta National, and of course, one of the biggest sporting events in this country, March Madness. This yearly collegiate basketball tournament brings American sports fans together, having everyone watch the first and second round games all day long all the way up until the championship. I remember from personal experience being in high school, watching the first games of the first round tip off around 12:30pm not paying attention to class at all and just watch on the phone all school day long. The same would go for every other guy in school as all that would be on our minds is March Madness. Sometimes, we even got lucky, having our teachers project the games on the whiteboard during class. For this project, the end goal is to try and predict seeding placements for the 68 teams that make the tournament. The data that is going to be used to predict the target variable which is the seed or placement prior to the tournament beginning, include countless basic and advanced basketball analytics. The data was pulled from Kaggle and includes data from the 2013 tournament all the way up to the 2022 tournament (excluding the 2020 tournament which was canceled due to the pandemic).
+
+# Background Information and Motivation for Project
+March Madness occurs once a year, usually around early-mid March up until early April. Now what March Madness actually is is the NCAA Division I Basketball tournament where 68 teams across the country play in a bracket style tournament until one team is left standing and is crowned as the national champion. Many wonder how to make the tournament and there are two ways to get a bid to play in the madness. The first way is to win the conference championship. All teams across the country are split into different conferences and each have their own little bracket style tournament. The one that comes up on top and wins their conference championship punches their automatic ticket to the tournament. The other way to make one's way into the tournament is by getting a bid from the NCAA Basketball committee. These are for the remaining spots left in the tournament for those who did not win their conference championship, but played at a top level all season, that deserve to play in the madness. The selection process this way is very difficult and awkward to make. There are over 350 different collegiate programs across the nation and it's a weird process to decide who gets to play, especially since every team does not play each other during the regular season. The committee looks at advanced analytics to see which teams deserve a shot at winning a national championship. For example, the committee must take into consideration a team that goes 23-14 during the regular season who plays in a top conference in the nation compared to a team that goes 31-8 in a much weaker conference. Not only does that take into consideration in making the tournament, but what seed a team is placed at if selected into the tournament. What makes March Madness so exciting is its unpredictability. Every March, tens of millions of brackets are made by the everyday basketball fan to try and predict the perfect bracket. Unfortunately it is quite literally impossible to predict a perfect bracket. There has never been a perfect bracket ever created, according to the NCAA. This past March Madness, everyone’s bracket was busted after the first round of the tournament. The odds of making a perfect bracket are 1 in 9.2 quintillion. This is why we decided not to predict the winners of the tournament and just the seeds for the tournament.
+
+In our project, we decided to do this project because we both are huge basketball fans and at the time of choosing what topic, it was in the middle of March Madness. More importantly, we wanted to understand and be somewhat in the shoes of the NCAA Committee, the ones who select who fills in the other half of the seedings for the tournament. We also wanted to understand what makes another team better than another if they never end up playing each other. With over 350 Division I programs across the country, not every team is gonna play each other. Teams usually only play within their conference with the rest of other games played against local teams or teams they usually play yearly. 
+
+# Data
+
+```{r}
+library(readxl)
+df <- read_excel("C:\\Users\\Devon DiMatteo\\Desktop\\danl310df.xlsx")
+skim_summary <- skim(df)
+print(skim_summary)
+```
+
+
+# Conceptual Framework
+In this project, we are trying to predict the seedings for the NCAA tournament just like how the NCAA Committee would. The variables we are pulling from the whole dataset include: Wins, Adjusted Offensive + Defensive Efficiency, Effective FG Shot + Allowed, Turnover Rate, Steal Rate, 2 point FG Percentage Made + Allowed, 3 point FG Percentage Made + Allowed, Free Throw Rate Earned + Allowed, & Wins Above Bubble. We believe these basic and advanced analytics are most important in a team's success and caliber to be champions, which is ultimately why they’re gonna be used to predict the teams to compete for the national title. We used Python to split the data and to create and train a model through Linear Regression, Decision Tree Regression, and Random Forest. 
+
+First off, we decided to go with using linear regression for the reasoning that in a linear regression is used to predict the value of a variable based on the value of another variable. We also decided to go with a decision tree because it acts as a flowchart-like structure where each internal node represents a feature, each branch represents a decision rule, and each leaf node represents a predicted value. In the case of regression, the predicted values are continuous numerical values. Similarly, Random forests are an ensemble learning method that creates multiple decision trees and combines their predictions to make more accurate and robust predictions. In the case of regression, each decision tree in the random forest is trained to predict a continuous numerical value. Overall, these 3 regressions would serve well in this situation trying to predict a singular outcome, which in our case is our seeding for the tournament, using a bunch of other different statistical variables. 
+
+
+# Model 
+
+The empirical model we want to study can be shown in the equation below:
+
+$$\begin{align}
+y_{i} =& \quad \beta_{0} + \beta_{1}ADJOE + \beta_{2}ADJDE + \beta_{3}EFG_O + \beta_{4}{EFG\_D}_{i} + \beta_{5}TOR_{i} + \beta_{6}TORD_{i}\\ &+\beta_{7}2{P\_O}_{i} + \beta_{8}2{P\_D}_{i} + \beta_{9}3{P\_O}_{i} + \beta_{10}SEED_{i} + \beta_{11}WAB_{i} +  \epsilon_{i}
+\end{align}$$
+
+To create this model we will use Python and machine learning techniques
+
+## Creating the model in Python
+
+The first step is loading the dataset and the required packages
+
+```{r}
+library(readxl)
+df <- read_excel("C:\\Users\\Devon DiMatteo\\Desktop\\danl310df.xlsx")
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+```
+
+The packages that are used to create the model are `numpy`, `pandas`, and `statsmodels.apu`
+Next we pull the variables that will be used in the regression.
+
+```{python}
+data=pd.read_excel("C:\\Users\\Devon DiMatteo\\Desktop\\danl310df.xlsx")
+cbb_data=data.copy()
+cbb = cbb_data[[ "W", "ADJOE", "ADJDE", "EFG_O", "EFG_D", "TOR", "TORD", "2P_O","2P_D", "3P_O","3P_D", "SEED", "WAB" ]]
+cbb
+```
+
+We then split the features and the labels into different datasets using the `.drop` function
+
+```{python}
+cbb_features=cbb.drop("SEED", axis="columns")
+cbb_labels=cbb["SEED"]
+```
+
+### Linear Regression Model
+
+For the linear regression model we use scikit-learn software to train the machine 
+learning model. 
+
+```{python}
+from sklearn.linear_model import LinearRegression
+lin_reg=LinearRegression()
+lin_reg.fit(cbb_features, cbb_labels)
+```
+
+### Decision Tree Model
+
+We also use the scikit-learn software for the dicision tree regression
+
+The following code is training the model:
+```{python}
+from sklearn.tree import DecisionTreeRegressor
+tree_reg=DecisionTreeRegressor()
+tree_reg.fit(cbb_features, cbb_labels)
+```
+
+### Random Forest Model
+
+Training the random forest model:
+
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+forest_reg=RandomForestRegressor()
+forest_reg.fit(cbb_features,cbb_labels)
+```
+
+# Results
+
+### Linear Regression Results
+
+Finding the coefficients of the independent variables:
+```{python}
+lin_reg.coef_
+```
+
+Finding the p-values and testing for significance:
+
+```{python}
+X = sm.add_constant(cbb_features)  # add a constant term to the independent variables
+results = sm.OLS(cbb_labels, cbb_features).fit()
+p_values = results.pvalues
+
+# print the coefficients and p-values
+print("Coefficients:", lin_reg.coef_)
+print("P-values:", p_values[0:])
+```
+
+```{python}
+alpha = 0.05
+significant_coeffs = [i for i in range(len(p_values)) if p_values[i] < alpha]
+print("Significant coefficients:", significant_coeffs)
+```
+
+The only variable that were statistically significant at the 5 percent
+confidence interval were wins above the bubble and three point defense.
+
+### Decision Tree Results
+
+Finding the root mean squared error
+
+```{python}
+from sklearn.metrics import mean_squared_error
+cbb_predictions2=tree_reg.predict(cbb_features)
+tree_mse=mean_squared_error(cbb_labels, cbb_predictions2)
+
+import numpy as np
+tree_rmse=np.sqrt(tree_mse)
+
+print(tree_rmse)
+```
+
+An error of 0 means the model is overfitting
+
+Evaluating the model using cross-validation
+
+```{python}
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import cross_val_score
+
+# evaluate the model using cross-validation
+scores = cross_val_score(tree_reg, cbb_features, cbb_labels, cv=5)
+print("Cross-validation scores:", scores)
+print("Mean score:", scores.mean())
+# -15 is a sign of overfitting
+```
+
+A mean value of -15 is a sign of overfitting
+
+Finding the feature importances
+
+```{python}
+print("Feature importances:", tree_reg.feature_importances_)
+```
+
+WAB is the most important variable in the regression.
+
+### Random Forest Results
+
+Finding the root mean squared error
+
+```{python}
+from sklearn.metrics import mean_squared_error
+cbb_predictions3=forest_reg.predict(cbb_features)
+forest_mse=mean_squared_error(cbb_labels, cbb_predictions3)
+forest_rmse=np.sqrt(forest_mse)
+```
+
+```{python}
+print(forest_rmse)
+```
+
+A value of 0.69 is good
+
+Evaluating the model using cross-validation
+
+```{python}
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+
+# evaluate the model using cross-validation
+scores = cross_val_score(forest_reg, cbb_features, cbb_labels, cv=5)
+print("Cross-validation scores:", scores)
+print("Mean score:", scores.mean())
+```
+
+A score of -9 could mean potential overfitting.
+
+Finding the feature importances
+
+```{python}
+print("Feature importances:", forest_reg.feature_importances_)
+```
+
+The wins above bubble variable is shown again to have the most importance
+in predicting the seed.
+
+# Discussion
+We think that the the model that performed the best was the linear regression model. Even though the random forest had a lower rmse we think that there
+were problems with overfitting, so the linear regression was most accurate.
+To create a more accurate model we should test the models over the unseen 
+data. This is what could be causing the overfitting. There could also be
+multicolinearity since some of the variables are very similar like the 
+adjusted offensive efficiency and two point percentage. The adjusted offensive 
+efficiency and adjusted defensive efficiency uses several different metrics,
+in which some could have been used as other variables in our models. 
+These could include two point and three point percentage for offense and for 
+defense. Turnovers could also be a metric for the adjusted efficiencies. When 
+looking at the importance scores and the coefficient values we see a general
+trend that defensive stats result in higher seeding. However, wins above the 
+bubble had a very clear relationship to seeding through all three models.
+
+# Conclusion
+We can conclude that the NCAA committee regards wins above the bubble as the
+most important factor out of all the variables we tested. The project shed 
+light on how statistics are not as important as winning against good teams. 
+We also show that defense is more important for beating good teams and 
+earning a spot in the NCAA tournament. 
+
+The results led us to several ideas for future study. We could use this 
+information to predict potential AP Top 25 polls for upcoming season. We can 
+also predict a potential bracket for upcoming season. Predicting the winner of 
+NCAA tournament for upcoming season would be very difficult but very 
+interesting. Lastly, predicting what teams get the best incoming recruits 
+based on tournament outcome could show how teams get better overtime from 
+winning.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
